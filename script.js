@@ -1,9 +1,10 @@
-// https://openweathermap.org/api/one-call-3#current
 const weatherForm = document.querySelector(".weatherForm");
 const cityInput = document.querySelector(".cityInput");
 const card = document.querySelector(".card");
-const apiKey = "b8aa2cd45b551bc7cb77891e3feb27fe";
+const apiKey = "59e1dc42f9f84273b6f81303253003";
 
+
+// getWeatherData() => getLatLon() => displayWeatherInfo()
 weatherForm.addEventListener("submit", async event => {
     event.preventDefault();
     const city = cityInput.value;
@@ -24,25 +25,37 @@ weatherForm.addEventListener("submit", async event => {
 });
 
 async function getWeatherData(city){
-    locationInfo = getLatLon(city);
-    console.log(locationInfo);
-    const lang = "zh-cn";
-    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&lang=${lang}`;
+    const baseUrl = "https://api.weatherapi.com/v1"
+    
+    const apiUrl = `${baseUrl}/current.json?key=${apiKey}&q=${city}`;
+    const response = await fetch(apiUrl);
+    const data  = await response.json();
+    return data;
 }
+
 
 function displayWeatherInfo(data){
-}
-
-async function getLatLon(city){
-    const cityApiUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`
-    const response = await fetch(cityApiUrl);
+    const { location, current } = data;
     
-    if (!response.ok){
-        throw new Error("Could not fetch weather data.");
-    }
-
-    return await response.json();
+    // Get location info
+    const city = location.name;
+    //const country = location.country;
+    
+    // Get weather data
+    const temperature = current.temp_c;  // Celsius
+    const condition = current.condition.text;
+    const icon = current.condition.icon;  // URL to weather icon
+    
+    card.innerHTML = 
+    `
+    <h1 class="cityDisplay">${city}</h1>
+    <p class="tempDisplay">${temperature}°C</p>
+    <p class="humidityDisplay">humidity: 75%</p>
+    <p class="descDisplay">${condition}</p>
+    <img class="weatherEmoji" src="https:${icon}" alt="Weather icon">`
 }
+
+
 
 function getWeatherEmoji(weatherId){
 
