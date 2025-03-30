@@ -10,6 +10,9 @@ body{
 
 .weatherForm{
     margin: 20px;
+    flex-wrap: nowrap;
+    gap: 10px; 
+    display: flex; 
 }
 
 .cityInput{
@@ -30,6 +33,7 @@ button[type="submit"]{
     border-radius: 10px;
     border: none;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 button[type="submit"]:hover{
