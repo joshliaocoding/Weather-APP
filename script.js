@@ -1,7 +1,7 @@
 const weatherForm = document.querySelector(".weatherForm");
 const cityInput = document.querySelector(".cityInput");
 const card = document.querySelector(".card");
-const apiKey = "59e1dc42f9f84273b6f81303253003";
+const apiKey = "";
 
 
 // getWeatherData() => getLatLon() => displayWeatherInfo()
@@ -36,30 +36,24 @@ async function getWeatherData(city){
 
 function displayWeatherInfo(data){
     const { location, current } = data;
-    
-    // Get location info
+    card.style.display = "flex";
+    // Get Weather info
     const city = location.name;
-    //const country = location.country;
-    
-    // Get weather data
     const temperature = current.temp_c;  // Celsius
     const condition = current.condition.text;
     const icon = current.condition.icon;  // URL to weather icon
-    
+    const humidity = current.humidity;
+    console.log(location);
     card.innerHTML = 
     `
     <h1 class="cityDisplay">${city}</h1>
     <p class="tempDisplay">${temperature}°C</p>
-    <p class="humidityDisplay">humidity: 75%</p>
+    <p class="humidityDisplay">humidity: ${humidity}%</p>
     <p class="descDisplay">${condition}</p>
     <img class="weatherEmoji" src="https:${icon}" alt="Weather icon">`
 }
 
 
-
-function getWeatherEmoji(weatherId){
-
-}
 
 function displayError(message){
     const errorDisplay = document.createElement("p");
